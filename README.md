@@ -8,7 +8,8 @@
 
 ## 内容
 
-（待补充）
+- `scripts/` — 实用脚本（GitLab 代理开关等）
+- `skills/` — AI 相关 skills（待补充）
 
 ## 双远程推送
 
