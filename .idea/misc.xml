@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GHAISettings">{}</component>
-  <component name="McpProjectServerCommands">
-    <commands />
-    <urls />
-  </component>
+  <component name="GHAISettings"><![CDATA[{}]]></component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
