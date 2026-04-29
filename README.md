@@ -9,7 +9,7 @@
 ## 内容
 
 - `scripts/` — 实用脚本（GitLab 代理开关等）
-- `skills/` — AI 相关 skills（待补充）
+- `skills/` — AI 相关 skills（持续补充中）
 
 ## 仓库配置
 
