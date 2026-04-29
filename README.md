@@ -11,15 +11,18 @@
 - `scripts/` — 实用脚本（GitLab 代理开关等）
 - `skills/` — AI 相关 skills（待补充）
 
-## 主仓库
+## 仓库配置
 
-- **GitLab（主）**: `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
-- **GitHub（镜像）**: `https://github.com/JacobZyy/jacob-skills-collection`
+- **GitHub（主仓库）**: `https://github.com/JacobZyy/jacob-skills-collection`
+  - `origin` 指向 GitHub
+  - 普通 `git push` 只同步到 GitHub
+- **GitLab（公司备份）**: `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
+  - 通过脚本临时切换推送
 
 ## 快捷提交
 
 ```bash
-# 一键提交到 GitLab（自动 add + commit + push）
+# 一键提交到 GitLab（先 push GitHub，再临时切 GitLab 同步，最后切回 GitHub）
 ./scripts/commit-to-gitlab.sh "提交信息"
 # 或
 pnpm commit "提交信息"

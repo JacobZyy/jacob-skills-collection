@@ -6,8 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 个人 AI 相关工具合集仓库。收集和整理个人开发的 AI 工具、脚本和配置。
 
-- 主仓库: GitLab `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
-- 镜像: GitHub `https://github.com/JacobZyy/jacob-skills-collection`
+- 主仓库: GitHub `https://github.com/JacobZyy/jacob-skills-collection`
+- 公司备份: GitLab `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
 - 包管理: pnpm
 - 类型: ESM (`"type": "module"`)
 
@@ -42,8 +42,8 @@ pnpm proxy:off     # 关闭代理
 
 ### Git Remote Setup
 
-- `origin` → GitLab（主仓库）
-- `github` → GitHub（镜像，仅 fetch，手动推送）
+- `origin` → GitHub（主仓库，普通 push 目标）
+- `github` → GitLab（公司备份，脚本临时切换推送）
 
 ### 代理配置
 
@@ -62,10 +62,13 @@ git config --local http.https://gitlab.zhuanspirit.com/.proxy http://127.0.0.1:1
 ### 提交脚本行为
 
 `scripts/commit-to-gitlab.sh`:
-- `git add -A`（添加所有改动）
-- `git commit -m "$MSG"`
-- `git push origin main`
-- 默认提交信息: `"chore: update"`
+1. `git add -A` + `git commit`
+2. `git push origin main` → 推送到 **GitHub**
+3. 临时将 `origin` 改为 GitLab URL
+4. `git pull --rebase` + `git push origin main` → 推送到 **GitLab**
+5. 将 `origin` 改回 GitHub URL
+
+默认提交信息: `"chore: update"`
 
 ## Project Structure
 
