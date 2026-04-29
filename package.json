@@ -13,7 +13,6 @@
     "proxy:off": "./scripts/gitlab-proxy.sh off",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "commit": "./scripts/commit-to-gitlab.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

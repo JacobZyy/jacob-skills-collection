@@ -17,16 +17,12 @@
   - `origin` 指向 GitHub
   - 普通 `git push` 只同步到 GitHub
 - **GitLab（公司备份）**: `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
-  - 通过脚本临时切换推送
+  - 通过 `gitlab-sync` skill 临时切换推送
 
-## 快捷提交
+## 双仓库提交
 
-```bash
-# 一键提交到 GitLab（先 push GitHub，再临时切 GitLab 同步，最后切回 GitHub）
-./scripts/commit-to-gitlab.sh "提交信息"
-# 或
-pnpm commit "提交信息"
-```
+- **普通提交**（仅 GitHub）：`git add -A && git commit -m "msg" && git push origin main`
+- **同步 GitLab 备份**：使用 `gitlab-sync` skill（`.omc/skills/gitlab-sync/SKILL.md`）
 
 ## GitLab 代理开关
 
