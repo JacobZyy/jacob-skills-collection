@@ -1,16 +1,24 @@
 {
   "name": "jacob-skills-collection",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
   "main": "index.js",
   "scripts": {
     "proxy:status": "./scripts/gitlab-proxy.sh status",
     "proxy:on": "./scripts/gitlab-proxy.sh on",
     "proxy:off": "./scripts/gitlab-proxy.sh off",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "commit": "./scripts/commit-to-gitlab.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "@antfu/eslint-config": "^8.2.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-format": "^2.0.1"
+  }
 }
