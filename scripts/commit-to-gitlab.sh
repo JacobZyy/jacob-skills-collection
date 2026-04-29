@@ -16,10 +16,9 @@ git add -A
 git commit -m "$MSG" || echo "没有需要提交的改动"
 git push origin main
 
-# 2. 临时切到 GitLab，同步并推送
+# 2. 临时切到 GitLab并推送
 echo "=== 同步到 GitLab ==="
 git remote set-url origin "$GITLAB_URL"
-git pull origin main --rebase 2>/dev/null || true
 git push origin main
 
 # 3. 切回 GitHub
