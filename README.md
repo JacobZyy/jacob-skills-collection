@@ -11,26 +11,33 @@
 - `scripts/` — 实用脚本（GitLab 代理开关等）
 - `skills/` — AI 相关 skills（待补充）
 
-## 双远程推送
+## 主仓库
 
-本仓库同时关联 GitHub 和 GitLab，push 时自动同步到两个远端：
+- **GitLab（主）**: `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
+- **GitHub（镜像）**: `https://github.com/JacobZyy/jacob-skills-collection`
 
-- GitHub: `https://github.com/JacobZyy/jacob-skills-collection`
-- GitLab: `https://gitlab.zhuanspirit.com/zhayang/jacob-open-source`
+## 快捷提交
+
+```bash
+# 一键提交到 GitLab（自动 add + commit + push）
+./scripts/commit-to-gitlab.sh "提交信息"
+# 或
+pnpm commit "提交信息"
+```
 
 ## GitLab 代理开关
 
-公司内网访问 GitLab 需要代理时，使用以下命令：
+公司内网访问 GitLab 需要代理时：
 
 ```bash
-# 查看代理状态
-./scripts/gitlab-proxy.sh status
+# 查看状态
+pnpm proxy:status
 
-# 开启代理（挂到 127.0.0.1:12639）
-./scripts/gitlab-proxy.sh on
+# 开启代理
+pnpm proxy:on
 
 # 关闭代理
-./scripts/gitlab-proxy.sh off
+pnpm proxy:off
 ```
 
 ## 使用
