@@ -22,7 +22,7 @@
 ## 双仓库提交
 
 - **普通提交**（仅 GitHub）：`git add -A && git commit -m "msg" && git push origin main`
-- **同步 GitLab 备份**：使用 `gitlab-sync` skill（`.omc/skills/gitlab-sync/SKILL.md`）
+- **同步 GitLab 备份**：使用 `gitlab-sync` skill（`.claude/skills/gitlab-sync/SKILL.md`）
 
 ## GitLab 代理开关
 

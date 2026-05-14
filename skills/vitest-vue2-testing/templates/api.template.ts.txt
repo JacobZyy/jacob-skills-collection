@@ -1,0 +1,64 @@
+/**
+ * Template: API module test
+ *
+ * Usage: copy this file to tests/unit/api/<your-api>.test.ts and edit the TODOs.
+ *
+ * Core principles:
+ *  - Business code routes through @/utils/http; mock that layer (do NOT mock @zz/fetch)
+ *  - Assert http.post / http.get URL + arguments. Do NOT assert real network.
+ *  - API ready + TS types available -> construct a valid mock response from the types
+ *  - API not ready -> minimal reasonable shape + @todo comment
+ */
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+
+// 1. Mock the business HTTP layer (must come before importing the API module)
+vi.mock('@/utils/http', () => ({
+  default: {
+    post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
+  },
+}))
+
+// 2. Import the API under test and the http reference
+import http from '@/utils/http'
+// TODO: change to the API you want to test
+import { getBrandListByCateId } from '@/api/nlabSkuSelect'
+
+// 3. Same-origin API BASE constant (keep in sync with src/api/xxx.ts)
+const BASE = '/transfer/api/saleCustom'
+
+describe('api/nlabSkuSelect', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  describe('getBrandListByCateId', () => {
+    it('builds the URL and payload correctly', async () => {
+      // API ready + TS types -> build a valid mock response
+      const mockResp = { brandList: [{ brandId: 1, brandName: 'Apple' }] }
+      vi.mocked(http.post).mockResolvedValue(mockResp)
+
+      const params = { cateId: 101 }
+      const result = await getBrandListByCateId(params)
+
+      expect(http.post).toHaveBeenCalledTimes(1)
+      expect(http.post).toHaveBeenCalledWith(`${BASE}/getBrandListByCateId`, params)
+      expect(result).toEqual(mockResp)
+    })
+
+    it('still calls through with an empty payload', async () => {
+      vi.mocked(http.post).mockResolvedValue({ brandList: [] })
+      // @ts-expect-error - exercising the type boundary
+      await getBrandListByCateId({})
+      expect(http.post).toHaveBeenCalled()
+    })
+
+    // API not ready scenario
+    it.skip('@todo backfill error-path assertion once the API is ready', async () => {
+      vi.mocked(http.post).mockRejectedValue(new Error('network'))
+      await expect(getBrandListByCateId({ cateId: 0 })).rejects.toThrow()
+    })
+  })
+})

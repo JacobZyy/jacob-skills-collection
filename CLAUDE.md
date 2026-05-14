@@ -44,6 +44,7 @@ pnpm proxy:off     # 关闭代理
 ### 提交规范
 
 **普通提交（仅 GitHub）**：
+
 ```bash
 git add -A
 git commit -m "提交信息"
@@ -52,6 +53,7 @@ git push origin main
 
 **同步到 GitLab 备份**：
 必须使用 `gitlab-sync` skill。当用户要求提交到 GitLab、同步两个仓库、或提到 GitLab/备份时，触发此 skill 执行：
+
 1. push 到 GitHub（origin）
 2. 临时切 origin 到 GitLab URL，push
 3. 切回 GitHub URL
@@ -79,7 +81,7 @@ scripts/          # 实用脚本
   gitlab-proxy.sh       # GitLab 代理开关
 skills/           # AI 相关 skills（持续补充中）
 eslint.config.js  # ESLint 配置 (ESM)
-.omc/skills/gitlab-sync/SKILL.md  # GitLab 同步 skill
+.claude/skills/gitlab-sync/SKILL.md  # GitLab 同步 skill
 ```
 
 ## Notes

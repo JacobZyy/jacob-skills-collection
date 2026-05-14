@@ -6,8 +6,8 @@ from pathlib import Path
 
 WHISTLE_BASE = Path.home() / '.WhistleAppData'
 INSTANCES = {
-    'whistle-node': WHISTLE_BASE / '.whistle_client' / '.whistle',
-    'whistle-client': WHISTLE_BASE / '.whistle',
+    'whistle-client': WHISTLE_BASE / '.whistle_client' / '.whistle',
+    'whistle-node': WHISTLE_BASE / '.whistle',
 }
 
 

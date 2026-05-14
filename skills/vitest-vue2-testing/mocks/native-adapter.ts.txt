@@ -1,0 +1,84 @@
+/**
+ * @zz-common/native-adapter — shared mock
+ *
+ * Strategy: every JSBridge method is exported as vi.fn().
+ * Tests override per-call with mockResolvedValue / mockReturnValue as needed.
+ */
+import { vi } from 'vitest'
+
+// User info
+export const getUserInfo = vi.fn().mockResolvedValue({
+  uid: 'test-uid',
+  nickname: 'test-user',
+  ppu: 'test-ppu',
+})
+export const isLogin = vi.fn().mockResolvedValue(true)
+export const login = vi.fn().mockResolvedValue(true)
+export const logout = vi.fn().mockResolvedValue(undefined)
+
+// Page / routing
+export const openUrl = vi.fn().mockResolvedValue(undefined)
+export const closeWebview = vi.fn().mockResolvedValue(undefined)
+export const setTitle = vi.fn().mockResolvedValue(undefined)
+export const goBack = vi.fn().mockResolvedValue(undefined)
+
+// Communication
+export const callPhone = vi.fn().mockResolvedValue(undefined)
+export const openIM = vi.fn().mockResolvedValue(undefined)
+export const share = vi.fn().mockResolvedValue(undefined)
+
+// Device / system
+export const getSystemInfo = vi.fn().mockResolvedValue({
+  os: 'iOS',
+  osVersion: '16.0',
+  appVersion: '10.0.0',
+  network: 'wifi',
+})
+export const getLocation = vi.fn().mockResolvedValue({
+  latitude: 39.9,
+  longitude: 116.4,
+  city: 'Beijing',
+})
+export const setClipboard = vi.fn().mockResolvedValue(undefined)
+export const getClipboard = vi.fn().mockResolvedValue('')
+
+// Image / album
+export const chooseImage = vi.fn().mockResolvedValue([])
+export const previewImage = vi.fn().mockResolvedValue(undefined)
+export const saveImage = vi.fn().mockResolvedValue(undefined)
+
+// Payment
+export const pay = vi.fn().mockResolvedValue({ status: 'success' })
+
+// Generic
+export const callNative = vi.fn().mockResolvedValue(undefined)
+export const isApp = vi.fn().mockReturnValue(true)
+export const isMP = vi.fn().mockReturnValue(false)
+export const isH5 = vi.fn().mockReturnValue(false)
+
+// Default export (business code may do `import nativeAdapter from '@zz-common/native-adapter'`)
+export default {
+  getUserInfo,
+  isLogin,
+  login,
+  logout,
+  openUrl,
+  closeWebview,
+  setTitle,
+  goBack,
+  callPhone,
+  openIM,
+  share,
+  getSystemInfo,
+  getLocation,
+  setClipboard,
+  getClipboard,
+  chooseImage,
+  previewImage,
+  saveImage,
+  pay,
+  callNative,
+  isApp,
+  isMP,
+  isH5,
+}

@@ -1,0 +1,9 @@
+{
+  "name": "ai-skills-test",
+  "id": 192035264361417,
+  "main": "dist/main.js",
+  "ui": "dist/index.html",
+  "editor_type": [
+    "canvas"
+  ]
+}

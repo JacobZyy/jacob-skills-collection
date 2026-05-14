@@ -1,0 +1,56 @@
+/**
+ * @zz-common/zz-utils — shared mock
+ *
+ * Only the high-frequency methods are mocked. Add more as tests need them.
+ */
+import { vi } from 'vitest'
+
+// Image CDN cropping — return the original url in tests
+export const setPicSize = vi.fn((url: string, _size?: number) => url)
+
+// Cookie
+export const getCookie = vi.fn((_key: string) => '')
+export const setCookie = vi.fn()
+export const removeCookie = vi.fn()
+
+// URL helpers
+export const getUrlParam = vi.fn((_key: string) => '')
+export const parseQuery = vi.fn(() => ({}))
+export const stringifyQuery = vi.fn(() => '')
+export const appendQuery = vi.fn((url: string, _params: Record<string, any>) => url)
+
+// Environment checks
+export const isApp = vi.fn().mockReturnValue(true)
+export const isIOS = vi.fn().mockReturnValue(false)
+export const isAndroid = vi.fn().mockReturnValue(true)
+export const isMP = vi.fn().mockReturnValue(false)
+export const isWX = vi.fn().mockReturnValue(false)
+
+// Namespaced access (business code may do `url.getUrlParam(...)`)
+export const url = {
+  getUrlParam,
+  parseQuery,
+  stringifyQuery,
+  appendQuery,
+}
+
+export const cookie = {
+  get: getCookie,
+  set: setCookie,
+  remove: removeCookie,
+}
+
+export const env = {
+  isApp,
+  isIOS,
+  isAndroid,
+  isMP,
+  isWX,
+}
+
+export default {
+  setPicSize,
+  url,
+  cookie,
+  env,
+}

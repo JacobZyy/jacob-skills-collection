@@ -1,0 +1,1 @@
+(function(e){typeof define=="function"&&define.amd?define(e):e()})(function(){"use strict";var e=(t=>(t.HELLO="Hello!",t))(e||{});mg.showUI(__html__),mg.ui.onmessage=t=>{const{type:n,data:i}=t;if(n===e.HELLO){const o=mg.createText();o.characters=i}}});

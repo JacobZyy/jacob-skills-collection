@@ -1,0 +1,62 @@
+/**
+ * Template: Pinia store test
+ *
+ * Usage: copy this file to tests/unit/store/<your-store>.test.ts (or a co-located test dir)
+ * and edit the TODOs.
+ *
+ * Core principles:
+ *  - Always run setActivePinia(createPinia()) in beforeEach, otherwise state leaks across tests
+ *  - For actions that hit APIs: mock the api module and assert state transitions
+ */
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
+
+// 1. Mock APIs the store depends on (must come before importing the store)
+vi.mock('@/api/common', () => ({
+  getFeApolloInfoAjax: vi.fn(),
+}))
+
+// 2. Import the store under test and its dependencies
+// TODO: change to the store you want to test
+import { useFlowDataStore } from '@/views/newStandard/directSaleHome/components/directSaleFlowBanner/flowDataStore'
+import { getFeApolloInfoAjax } from '@/api/common'
+
+describe('store/flowDataStore', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    vi.clearAllMocks()
+  })
+
+  it('has the correct initial state', () => {
+    const store = useFlowDataStore()
+    // TODO: assert on the actual store fields
+    expect(store.flowList).toEqual([])
+  })
+
+  it('writes API response into state on action call', async () => {
+    const mockData = { list: [{ id: 1, name: 'item' }] }
+    vi.mocked(getFeApolloInfoAjax).mockResolvedValue(mockData as any)
+
+    const store = useFlowDataStore()
+    await store.fetchFlowData()
+
+    expect(getFeApolloInfoAjax).toHaveBeenCalledTimes(1)
+    expect(store.flowList).toEqual(mockData.list)
+  })
+
+  it('does not pollute state on API failure', async () => {
+    vi.mocked(getFeApolloInfoAjax).mockRejectedValue(new Error('network'))
+
+    const store = useFlowDataStore()
+    await store.fetchFlowData().catch(() => undefined)
+
+    expect(store.flowList).toEqual([])
+  })
+
+  it('computes getters correctly', () => {
+    const store = useFlowDataStore()
+    store.flowList = [{ id: 1 }, { id: 2 }] as any
+    // TODO: switch to the real getter field
+    expect(store.flowCount).toBe(2)
+  })
+})

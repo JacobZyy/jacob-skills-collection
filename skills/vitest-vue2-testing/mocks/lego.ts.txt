@@ -1,0 +1,41 @@
+/**
+ * @zz-common/lego — shared mock
+ *
+ * Strategy: all reporting methods are vi.fn(), no real reporting.
+ * To assert reporting calls from a test:
+ *   import { legoReport } from '@zz-common/lego'
+ *   expect(legoReport).toHaveBeenCalledWith(...)
+ */
+import { vi } from 'vitest'
+
+export const legoReport = vi.fn()
+export const legoExpose = vi.fn()
+export const legoClick = vi.fn()
+export const legoPv = vi.fn()
+export const pageId = vi.fn().mockReturnValue('test-page-id')
+export const setCommonParams = vi.fn()
+export const init = vi.fn()
+
+// Auto-exposure directive (business code may use v-lego-expose)
+export const directive = {
+  bind: vi.fn(),
+  inserted: vi.fn(),
+  update: vi.fn(),
+  unbind: vi.fn(),
+}
+
+export default {
+  legoReport,
+  legoExpose,
+  legoClick,
+  legoPv,
+  pageId,
+  setCommonParams,
+  init,
+  install(Vue: any) {
+    Vue.prototype.$legoReport = legoReport
+    Vue.prototype.$legoClick = legoClick
+    Vue.prototype.$legoExpose = legoExpose
+    Vue.directive('lego-expose', directive)
+  },
+}

@@ -1,0 +1,85 @@
+/**
+ * Template: Vue component test
+ *
+ * Usage: copy this file to tests/unit/views/.../<YourComp>.test.ts and edit the TODOs.
+ *
+ * Core principles:
+ *  - Use createLocalVue + PiniaVuePlugin; do NOT pollute the global Vue
+ *  - @zz-common/* are globally mocked in setup.ts; do NOT redeclare them here
+ *  - vi.mock business APIs at the top of this file and assert the mock calls
+ *  - Always do a real mount + behavioral assertions. NEVER write `expect(Comp).toBeDefined()` as the whole test.
+ */
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { createLocalVue, mount, type Wrapper } from '@vue/test-utils'
+import { PiniaVuePlugin, createPinia, setActivePinia } from 'pinia'
+
+// 1. Mock business APIs (before importing the component)
+vi.mock('@/api/common', () => ({
+  getFeApolloInfoAjax: vi.fn().mockResolvedValue({ list: [] }),
+}))
+
+// 2. Import the component under test
+// TODO: change to the component you want to test
+import Comp from '@/views/newStandard/directSaleHome/components/directSaleFlowBanner/index.vue'
+
+// 3. Construct a local Vue (with Pinia)
+const makeWrapper = (propsData: Record<string, any> = {}) => {
+  const localVue = createLocalVue()
+  localVue.use(PiniaVuePlugin)
+  const pinia = createPinia()
+  setActivePinia(pinia)
+
+  return mount(Comp, {
+    localVue,
+    pinia,
+    propsData,
+    // If the component depends on the router, add mocks: { $route, $router }
+    // mocks: { $route: { query: {} }, $router: { push: vi.fn() } },
+  }) as Wrapper<any>
+}
+
+describe('Component: directSaleFlowBanner', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('renders without crashing', () => {
+    const wrapper = makeWrapper()
+    expect(wrapper.exists()).toBe(true)
+    // Use the data-stub attribute that the UI-library mock passes through
+    // expect(wrapper.find('[data-stub="ZButton"]').exists()).toBe(true)
+  })
+
+  it('passes props through correctly', async () => {
+    const wrapper = makeWrapper({ title: 'Direct sale flow' })
+    await wrapper.vm.$nextTick()
+    expect(wrapper.text()).toContain('Direct sale flow')
+  })
+
+  it('emits the expected event on button click', async () => {
+    const wrapper = makeWrapper()
+    // TODO: pick the actual button selector
+    const btn = wrapper.find('[data-testid="confirm-btn"]')
+    if (btn.exists()) {
+      await btn.trigger('click')
+      expect(wrapper.emitted('confirm')).toBeTruthy()
+    }
+  })
+
+  it('calls the API on mount', async () => {
+    const { getFeApolloInfoAjax } = await import('@/api/common')
+    makeWrapper()
+    expect(getFeApolloInfoAjax).toHaveBeenCalled()
+  })
+
+  it('falls back gracefully when the API fails', async () => {
+    const { getFeApolloInfoAjax } = await import('@/api/common')
+    vi.mocked(getFeApolloInfoAjax).mockRejectedValueOnce(new Error('network'))
+
+    const wrapper = makeWrapper()
+    await wrapper.vm.$nextTick()
+    await new Promise((r) => setTimeout(r, 0))
+    // TODO: assert the fallback UI
+    expect(wrapper.exists()).toBe(true)
+  })
+})

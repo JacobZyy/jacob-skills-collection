@@ -1,0 +1,71 @@
+/**
+ * Template: pure utility function test
+ *
+ * Usage: copy this file to tests/unit/utils/<your-utils>.test.ts and edit the TODOs.
+ *
+ * Core principles:
+ *  - Pure function test = input -> output assertion; no mocks needed
+ *  - Edge cases: empty, null, undefined, very large, negative, special chars
+ *  - Side-effectful functions (mutating arguments / calling IO) need mocks
+ */
+import { describe, it, expect } from 'vitest'
+
+// TODO: change to the utility you want to test
+import { fen2yuan, yuan2fen, fen2yuan2fixed } from '@/utils/helper'
+
+describe('utils/helper - money conversion', () => {
+  describe('fen2yuan', () => {
+    it.each([
+      [199900, 1999],
+      [100, 1],
+      [0, 0],
+      [1, 0.01],
+    ])('%i fen -> %s yuan', (input, expected) => {
+      expect(fen2yuan(input)).toBe(expected)
+    })
+
+    it('supports negative numbers', () => {
+      expect(fen2yuan(-100)).toBe(-1)
+    })
+
+    it('handles string input', () => {
+      // @ts-expect-error - exercising the type boundary
+      expect(fen2yuan('100')).toBe(1)
+    })
+  })
+
+  describe('yuan2fen', () => {
+    it.each([
+      [1999, 199900],
+      [1.5, 150],
+      [0, 0],
+    ])('%s yuan -> %i fen', (input, expected) => {
+      expect(yuan2fen(input)).toBe(expected)
+    })
+
+    it('handles float precision (avoids 1.005 * 100 = 100.49999999999999)', () => {
+      expect(yuan2fen(1.005)).toBe(101)
+    })
+  })
+
+  describe('fen2yuan2fixed', () => {
+    it('keeps 2 decimal places', () => {
+      expect(fen2yuan2fixed(199900, 2)).toBe('1999.00')
+    })
+
+    it('keeps 0 decimal places', () => {
+      expect(fen2yuan2fixed(199900, 0)).toBe('1999')
+    })
+  })
+
+  describe('edge cases', () => {
+    it.each([
+      [null, 0],
+      [undefined, 0],
+      ['', 0],
+    ])('falsy input %s -> 0', (input, expected) => {
+      // @ts-expect-error - exercising the type boundary
+      expect(fen2yuan(input)).toBe(expected)
+    })
+  })
+})

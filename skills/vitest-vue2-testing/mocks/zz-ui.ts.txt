@@ -1,0 +1,99 @@
+/**
+ * @zz-common/zz-ui — shared mock
+ *
+ * Strategy: stub every z-* component as a minimal slot-passthrough,
+ * so mount succeeds and business assertions don't depend on UI library internals.
+ *
+ * Usage (in tests/unit/setup.ts):
+ *   vi.mock('@zz-common/zz-ui', async () => await import('./../__mocks__/zz-ui'))
+ */
+import { vi } from 'vitest'
+
+const makeStub = (name: string) => ({
+  name,
+  props: {
+    value: { default: undefined },
+    modelValue: { default: undefined },
+    title: { default: '' },
+    name: { default: '' },
+    type: { default: '' },
+    size: { default: '' },
+    show: { default: false },
+    loading: { default: false },
+    disabled: { default: false },
+    columns: { default: () => [] },
+    finished: { default: false },
+  },
+  // Pass all slots through, so child content can be asserted
+  render(this: any, h: any) {
+    const children = Object.values(this.$slots).flat().filter(Boolean)
+    return h(
+      'div',
+      { attrs: { 'data-stub': name, 'data-testid': name } },
+      children as any,
+    )
+  },
+})
+
+// Frequently-used components. If a component used by business code
+// is not listed and triggers "Failed to resolve component", just append it here.
+const COMPONENTS = [
+  'ZIcon',
+  'ZButton',
+  'ZButtonGroup',
+  'ZNavBar',
+  'ZFixTop',
+  'ZTabs',
+  'ZTab',
+  'ZList',
+  'ZPullRefresh',
+  'ZActionPicker',
+  'ZPicker',
+  'ZStance',
+  'ZToast',
+  'ZDialog',
+  'ZCheckbox',
+  'ZCheckboxGroup',
+  'ZRadio',
+  'ZRadioGroup',
+  'ZField',
+  'ZCell',
+  'ZCellGroup',
+  'ZImage',
+  'ZSwipe',
+  'ZSwipeItem',
+  'ZPopup',
+  'ZOverlay',
+  'ZLoading',
+  'ZSkeleton',
+  'ZTag',
+  'ZSearch',
+]
+
+const exportsMap: Record<string, any> = {}
+COMPONENTS.forEach((name) => {
+  exportsMap[name] = makeStub(name)
+})
+
+// Imperative service APIs
+exportsMap.Toast = vi.fn() as any
+exportsMap.Dialog = {
+  alert: vi.fn().mockResolvedValue(undefined),
+  confirm: vi.fn().mockResolvedValue('confirm'),
+  close: vi.fn(),
+} as any
+exportsMap.Notify = vi.fn() as any
+exportsMap.ImagePreview = vi.fn() as any
+
+// Vue plugin (business code may call Vue.use(ZUI))
+exportsMap.default = {
+  install(Vue: any) {
+    COMPONENTS.forEach((name) => {
+      // Register kebab-case names, e.g. ZIcon -> z-icon
+      const kebab = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+      Vue.component(kebab, exportsMap[name])
+    })
+  },
+}
+
+export = exportsMap

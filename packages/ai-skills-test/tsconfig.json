@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "paths": {
+      "@lib/*": ["./lib/*"],
+      "@ui/*": ["./ui/*"],
+      "@messages/*": ["./messages/*"]
+    },
+    "resolveJsonModule": true,
+    "types": [
+      "@mastergo/plugin-typings"
+    ],
+    "allowJs": false,
+    "strict": true,
+    "importHelpers": true,
+    "noEmit": true,
+    "outDir": "../dist",
+    "sourceMap": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": false
+  },
+  "include": [
+    "./ui/**/*.ts",
+    "./ui/**/*.tsx",
+    "./typings/*.d.ts",
+    "./lib/**/*.ts",
+    "./messages/**/*.ts"
+  ]
+}
