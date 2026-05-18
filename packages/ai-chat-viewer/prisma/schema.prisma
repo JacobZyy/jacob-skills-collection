@@ -1,0 +1,113 @@
+// ai-chat-viewer V1 — local-first AI chat record store
+//
+// Source of truth: claude-code rotating *.jsonl files under ~/.claude/projects/.
+// This SQLite DB is a *derived, rebuildable index*. Deleting the DB file must
+// allow a full rebuild from JSONL alone (AC-7).
+//
+// Discriminator policy (CLAUDE.md / banlist):
+//   - `tool` is a free-form String column at the DB layer because SQLite has
+//     no native enum and Prisma's `enum` for SQLite would still reduce to
+//     TEXT CHECK constraints, which we don't want gating ingestion of future
+//     adapters. The Zod layer (packages/schema) holds the actual discriminator
+//     (`z.literal("claude-code")` in V1) and is the single source of runtime
+//     truth. New adapters add a Zod literal *before* writes, never the DB.
+//   - All `tool` columns default to "claude-code" since V1 only ingests one
+//     source.
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+// One row per distinct cwd we have ever observed messages from.
+// Primary key is cwdHash (sha256(cwd) prefix) so it stays stable across
+// Project moves/renames at the FS layer (the encoded-cwd directory name is
+// lossy — see packages/ingestion/adapters/claude-code/decode-cwd.ts).
+model Project {
+  cwdHash     String   @id
+  cwd         String   @unique
+  displayName String
+  lastSeenAt  DateTime
+  firstSeenAt DateTime @default(now())
+
+  sessions Session[]
+
+  @@index([lastSeenAt])
+}
+
+// One row per claude-code session file (filename = sessionId).
+model Session {
+  id             String   @id
+  projectCwdHash String
+  tool           String   @default("claude-code")
+  startedAt      DateTime
+  lastActivityAt DateTime
+  gitBranch      String?
+  version        String?
+  entrypoint     String?
+  permissionMode String?
+  lastPrompt     String?
+  summary        String?
+
+  project     Project       @relation(fields: [projectCwdHash], references: [cwdHash], onDelete: Cascade)
+  messages    ChatMessage[]
+  attachments Attachment[]
+
+  @@index([projectCwdHash])
+  @@index([lastActivityAt])
+}
+
+// One row per parsed message line. parentUuid is nullable for roots and
+// builds the conversation tree (sidechains, branches). `raw` is the full
+// untouched JSON line so renderers can recover anything we didn't promote.
+model ChatMessage {
+  uuid        String   @id
+  sessionId   String
+  tool        String   @default("claude-code")
+  role        String
+  parentUuid  String?
+  isSidechain Boolean  @default(false)
+  timestamp   DateTime
+  content     Json
+  raw         Json
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, parentUuid])
+  @@index([sessionId, timestamp])
+}
+
+// Hook output, tool result, and other non-message attachments.
+// `relatedMessageUuid` is the nearest message uuid (best-effort linkage by
+// the ingestion adapter); null when the attachment is session-scoped.
+model Attachment {
+  id                 String   @id
+  sessionId          String
+  tool               String   @default("claude-code")
+  type               String
+  relatedMessageUuid String?
+  observedAt         DateTime
+  payload            Json
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, observedAt])
+  @@index([relatedMessageUuid])
+}
+
+// Tracks per-source-tool catch-up state so ingestion can resume without a
+// full rescan. `rootPath` is the directory the adapter watches (e.g.
+// ~/.claude/projects). `lastScannedAt` is the wall-clock of the last
+// completed scan pass; per-file byte offsets live elsewhere (a separate
+// FileTail table can be added if needed — V1 keeps it simple).
+model IngestionSource {
+  tool          String   @id
+  rootPath      String
+  lastScannedAt DateTime
+  createdAt     DateTime @default(now())
+}

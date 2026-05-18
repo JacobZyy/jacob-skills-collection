@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn",
+    "style": "off",
+    "pedantic": "off"
+  },
+  "rules": {
+    "no-explicit-any": "error",
+    "no-non-null-assertion": "warn"
+  },
+  "ignorePatterns": ["dist", "build", ".vite", "node_modules"]
+}

@@ -1,0 +1,14 @@
+[install]
+# Hoist workspace dependencies to the root node_modules so packages can resolve
+# each other through the workspace protocol without per-package linking quirks.
+linker = "hoisted"
+exact = false
+# Cert-friendly mirror so `bun install` works in restricted-network setups.
+registry = "https://registry.npmmirror.com"
+
+[install.scopes]
+# Use the public registry by default; override per environment if needed.
+
+[run]
+# Disable Bun's "auto" mode so scripts behave consistently with package.json.
+bun = true

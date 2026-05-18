@@ -1,0 +1,26 @@
+{
+  "name": "@ai-chat-viewer/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./app-type": "./src/lib/app-type.ts",
+    "./sse-events": "./src/sse/bus.ts"
+  },
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@ai-chat-viewer/ingestion": "workspace:*",
+    "@ai-chat-viewer/schema": "workspace:*",
+    "@hono/node-server": "^1",
+    "@prisma/client": "^6.2.0",
+    "chokidar": "^4",
+    "hono": "^4"
+  }
+}

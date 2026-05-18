@@ -1,0 +1,17 @@
+{
+  "name": "@ai-chat-viewer/ingestion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./adapters/claude-code": "./adapters/claude-code/index.ts",
+    "./adapters/claude-code/blocks": "./adapters/claude-code/blocks.ts"
+  },
+  "dependencies": {
+    "@ai-chat-viewer/schema": "workspace:*",
+    "zod": "^3"
+  }
+}

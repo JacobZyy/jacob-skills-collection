@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "types": ["node"]
+  },
+  "include": ["src", "adapters", "types.ts"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/node_modules", "**/dist"]
+}

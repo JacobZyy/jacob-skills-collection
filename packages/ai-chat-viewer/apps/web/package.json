@@ -1,0 +1,35 @@
+{
+  "name": "@ai-chat-viewer/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src"
+  },
+  "dependencies": {
+    "@ai-chat-viewer/server": "workspace:*",
+    "@tanstack/react-query": "^5",
+    "hono": "^4",
+    "react": "^19",
+    "react-dom": "^19",
+    "react-markdown": "^10",
+    "react-router-dom": "^7.15.0",
+    "remark-gfm": "^4"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5",
+    "autoprefixer": "^10",
+    "daisyui": "^4",
+    "oxlint": "^1",
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "typescript": "^5",
+    "vite": "^7"
+  }
+}

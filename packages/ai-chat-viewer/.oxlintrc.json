@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {},
+  "rules": {
+    "no-explicit-any": "deny"
+  },
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.data/**",
+    "**/build/**",
+    "**/coverage/**",
+    "prisma/migrations/**",
+    "scripts/spike-chokidar.ts",
+    ".ac10-self-check/**"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "ai-chat-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun --filter '@ai-chat-viewer/web' --filter '@ai-chat-viewer/server' dev",
+    "typecheck": "bun --silent --filter='*' typecheck",
+    "lint": "bun --silent --filter='*' lint",
+    "check:schema-banlist": "bash scripts/check-schema-banlist.sh"
+  },
+  "engines": {
+    "bun": ">=1.2.0"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.2.0",
+    "@types/node": "^25.6.2",
+    "chokidar": "^4",
+    "prisma": "^6.2.0"
+  }
+}

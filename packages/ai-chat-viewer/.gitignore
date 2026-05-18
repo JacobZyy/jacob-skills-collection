@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Bun
+bun.lock
+bun.lockb
+.bun/
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Vite
+.vite/
+
+# Prisma generated client (must be regenerated locally)
+**/prisma/generated/
+**/node_modules/.prisma/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Local SQLite DB (the global app DB lives outside the repo, but guard anyway)
+*.sqlite
+*.sqlite-journal
+*.db
+
+# OMC runtime artifacts (state is per-machine)
+.omc/state/
+.omc/logs/
+.omc/research/
+
+# AC-10 self-check sandbox (transient — script writes a deliberately-broken
+# fixture here to verify the lint gate; cleaned on script exit).
+.ac10-self-check/
