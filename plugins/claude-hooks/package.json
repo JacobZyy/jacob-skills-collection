@@ -1,0 +1,10 @@
+{
+  "name": "claude-hooks",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "^6.9.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.9.0"
+  }
+}

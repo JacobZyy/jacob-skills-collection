@@ -1,0 +1,33 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run --bun ${CLAUDE_PLUGIN_ROOT}/scripts/token-stats-tool.ts",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run --bun ${CLAUDE_PLUGIN_ROOT}/scripts/oxlint-stop.ts",
+            "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "bun run --bun ${CLAUDE_PLUGIN_ROOT}/scripts/token-stats-stop.ts",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

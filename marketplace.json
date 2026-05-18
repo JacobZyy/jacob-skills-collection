@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "jacob-skills-collection",
+  "description": "个人 Claude Code 工具集 — hooks、skills、配置",
+  "owner": {
+    "name": "Jacob Zhang"
+  },
+  "plugins": [
+    {
+      "name": "claude-hooks",
+      "source": "./plugins/claude-hooks",
+      "description": "用户级 hooks：oxlint 类型偷懒断言门禁 + token 消耗记录",
+      "version": "1.0.0",
+      "category": "devtools",
+      "tags": ["lint", "oxlint", "token-stats", "hooks"]
+    }
+  ]
+}

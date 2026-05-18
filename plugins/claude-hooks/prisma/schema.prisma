@@ -1,0 +1,44 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:/Users/jacobzha/.claude/data/token-stats.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model TurnUsage {
+  id             Int      @id @default(autoincrement())
+  sessionId      String
+  turnIdx        Int
+  tsStart        DateTime
+  tsEnd          DateTime
+  model          String
+  inputTokens    Int
+  outputTokens   Int
+  cacheRead      Int
+  cacheWrite     Int
+  costEstUsd     Float
+  userMsgPreview String?
+  toolCallCount  Int      @default(0)
+
+  @@index([sessionId])
+  @@index([tsEnd])
+  @@index([model])
+}
+
+model ToolCall {
+  id                 Int      @id @default(autoincrement())
+  sessionId          String
+  turnIdx            Int
+  toolName           String
+  toolInputPreview   String?
+  toolResultChars    Int
+  toolResultTokenEst Int
+  ts                 DateTime
+
+  @@index([sessionId])
+  @@index([toolName])
+  @@index([toolResultTokenEst])
+  @@index([ts])
+}
